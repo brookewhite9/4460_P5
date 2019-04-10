@@ -7,6 +7,8 @@ function start() {
     var width = 800;
     var height = 600;
 
+    var graphNum = 0;
+
     var svg = d3.select(graph)
         .append('svg')
         .attr('width', width)
@@ -82,67 +84,156 @@ function start() {
            
         });
 
-        xScale.domain([1995, 2016]); // scaled by year
-        yScale.domain([0, d3.max(data, function(d) { return NumYearCount[d.Event_Date]; })]); // scaled by date
+        createGraph1();
+         d3.select(graph)
+            .append('p')
+            .append('button')
+                .style("border", "1px solid black")
+            .text('Previous')
+            .on('click', function() {
+                if (graphNum == 1) {
+                    resetDots();
+                } else if (graphNum == 2) {
+                    resetDots();
+                    transitionIncrease();
+                    graphNum = 1;
+                }
+                
+            });
+
+            d3.select(graph)
+            .append('button')
+                .style("border", "1px solid black")
+            .text('Next')
+            .on('click', function() {
+                if (graphNum == 0) {
+                    transitionIncrease();
+                    graphNum = 1;
+                } else if (graphNum == 1) {
+                    resetDots();
+                    transitionDecrease();
+                    graphNum = 2;
+                }
+                
+            });
+
+            function resetDots() {
+                svg.selectAll('.dot')
+                    .filter(function(d,i) {
+                        return true;
+                    })
+                    .transition()
+                    .duration(function(d) {
+                        return d.Event_Date / 2;
+                    })
+                    .attr('r', 5)
+                    .attr("fill", "black")
+                    .style("stroke", "black")
+                    .style("stroke-width", "1px")
+            }
+
+
+            function createGraph1() {
+                xScale.domain([1995, 2016]); // scaled by year
+                yScale.domain([0, d3.max(data, function(d) { return NumYearCount[d.Event_Date]; })]); // scaled by date
+                
+                var dataset = d3.range(22).map(function(d, i) { return {"y": NumYearCountArray[i].count, "Event_Date": +NumYearCountArray[i].Event_Date } })
+
+                // line showing amount of crashes per year
+                var valueline = d3.line()
+                    .x(function(d) { return xScale(d.Event_Date); })
+                    .y(function(d) { return yScale(d.y); })
+                    .curve(d3.curveMonotoneX);
+
+
+                svg.append("path")
+                  .datum(dataset)
+                  .attr("class", "line")
+                  .style("fill", "none")
+                  .attr("stroke", "steelblue")
+                  .attr("stroke-width", 5)
+                  .attr('transform', 'translate(30,0)')
+                  .attr("d", valueline);
+
+                // Add the X Axis
+                svg.append("g")
+                   .attr("class", "x axis")
+                   .attr("transform", "translate(30," + (height - 20) + ")")
+                   .call(d3.axisBottom(xScale)
+                            .ticks(22)
+                            .tickFormat(d3.format("d")));
+                   
+
+                // Add the Y Axis
+                svg.append("g")
+                   .style("fill", "black")
+                   .attr("class", "y axis")
+                   .attr('transform', 'translate(30,-20)')
+                   .call(d3.axisLeft(yScale)
+                            .ticks(15));
+
+                var tooltip = d3.select("#graph")
+                    .append("div")
+                    .attr("class", "tooltip")
+                    .style("position", "absolute")
+                    .style("z-index", "10")
+                    .style("visibility", "hidden");
+                   
+          
+                
+                svg.selectAll(".dot")
+                    .data(data)
+                        .enter().append("circle") // Uses the enter().append() method
+                    .attr("class", "dot") // Assign a class for styl ing
+                    .attr("cx", function(d) { return xScale(d.Event_Date) })
+                    .attr("cy", function(d) { return yScale(NumYearCount[d.Event_Date]) })
+                    .attr("r", 5)
+                    .attr('transform', 'translate(30,0)')
+                    .on("mouseover", function(d){
+                        tooltip.text("Year: " + d.Event_Date + "Number of Crashes: " + NumYearCount[d.Event_Date] 
+                            + "Number of Fatalities: " + NumFatalitiesCount[d.Event_Date]
+                            + "Total Uninjured: " + NumUninjuredCount[d.Event_Date]).attr("data-html", "true");
+
+                        return tooltip.style("visibility", "visible").attr("data-html", "true");})
+                    .on("mousemove", function(){return tooltip.style("top", (event.pageY)+"px").style("left",(event.pageX)+"px");})
+                    .on("mouseout", function(){return tooltip.style("visibility", "hidden");});
+            }
+
+            function transitionIncrease() {
+                svg.selectAll('.dot')
+                    .filter(function(d,i) {
+                        return NumYearCount[d.Event_Date] > NumYearCount[d.Event_Date - 1];
+                    })
+                    .transition()
+                    .duration(function(d) {
+                        return d.Event_Date / 2;
+                    })
+                    .attr('r', function(d) {
+                        return 15;
+                    })
+                    .attr("fill", "#FF9F80")
+                    .style("stroke", "black")
+                    .style("stroke-width", "1px")
+            }
+
+             function transitionDecrease() {
+                svg.selectAll('.dot')
+                    .filter(function(d,i) {
+                        return NumYearCount[d.Event_Date] < NumYearCount[d.Event_Date - 1];
+                    })
+                    .transition()
+                    .duration(function(d) {
+                        return d.Event_Date / 2;
+                    })
+                    .attr('r', function(d) {
+                        return 15;
+                    })
+                    .attr("fill", "#FF9F80")
+                    .style("stroke", "black")
+                    .style("stroke-width", "1px")
+            }
+        })
+
         
-        var dataset = d3.range(22).map(function(d, i) { return {"y": NumYearCountArray[i].count, "Event_Date": +NumYearCountArray[i].Event_Date } })
 
-        // line showing amount of crashes per year
-        var valueline = d3.line()
-            .x(function(d) { return xScale(d.Event_Date); })
-            .y(function(d) { return yScale(d.y); })
-            .curve(d3.curveMonotoneX);
-
-
-        svg.append("path")
-          .datum(dataset)
-          .attr("class", "line")
-          .style("fill", "none")
-          .attr("stroke", "steelblue")
-          .attr("stroke-width", 5)
-          .attr('transform', 'translate(30,0)')
-          .attr("d", valueline);
-
-        // Add the X Axis
-        svg.append("g")
-           .attr("class", "x axis")
-           .attr("transform", "translate(30," + (height - 20) + ")")
-           .call(d3.axisBottom(xScale)
-                    .ticks(22)
-                    .tickFormat(d3.format("d")));
-           
-
-        // Add the Y Axis
-        svg.append("g")
-           .style("fill", "black")
-           .attr("class", "y axis")
-           .attr('transform', 'translate(30,-20)')
-           .call(d3.axisLeft(yScale)
-                    .ticks(15));
-
-        var tooltip = d3.select("#graph")
-            .append("div")
-            .style("position", "absolute")
-            .style("z-index", "10")
-            .style("visibility", "hidden")
-            .attr("data-html", "true");
-            //.text(function(d) { return NumYearCount[d.Event_Date] });
-  
-        
-        svg.selectAll(".dot")
-            .data(data)
-                .enter().append("circle") // Uses the enter().append() method
-            .attr("class", "dot") // Assign a class for styl ing
-            .attr("cx", function(d) { return xScale(d.Event_Date) })
-            .attr("cy", function(d) { return yScale(NumYearCount[d.Event_Date]) })
-            .attr("r", 5)
-            .attr('transform', 'translate(30,0)')
-            .on("mouseover", function(d){
-                tooltip.text("Number of Crashes: " + NumYearCount[d.Event_Date] 
-                    + "\n Number of Fatalities: " + NumFatalitiesCount[d.Event_Date]
-                    + "\n Total Uninjured: " + NumUninjuredCount[d.Event_Date]).html()
-                return tooltip.style("visibility", "visible");})
-            .on("mousemove", function(){return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})
-            .on("mouseout", function(){return tooltip.style("visibility", "hidden");});
-            })
 }
