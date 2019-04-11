@@ -6,6 +6,25 @@
   shape-rendering: crispEdges;
 }
 
+#wrapper {
+	clear:both;
+	/*display: contents;*/
+}
+
+.selected {
+	stroke: red;
+	stroke-width: 10px;
+	fill:red;
+	color: red;
+}
+
+.selected2 {
+	stroke: orange;
+	stroke-width: 10px;
+	fill:orange;
+	color: orange;
+}
+
 .x.axis path {
   fill: none;
   stroke: #000;
@@ -36,4 +55,26 @@ div.tooltip {
 	border-radius: 8px;
 	pointer-events: none;
 
+}
+
+div.tooltip2 {
+	position: absolute;
+	text-align: center;
+	width: 170px;
+	height: 60px;
+	padding: 2px;
+	background: #DDA0DD;
+	border: 0px;
+	border-radius: 8px;
+	pointer-events: none;
+}
+
+#graph {
+	width: 50%;
+    float:left;
+    margin-top: 10px;
+}
+#graph2{
+	width: 50%;
+	float:right;
 }
