@@ -16,13 +16,6 @@ function start() {
         .attr('width', width)
         .attr('height', height);
 
-    // var svg2 = d3.select(graph)
-    //     .append("text")
-    //     .text("RANDOM TEXT.... BLAH BLAH... dsngfjorwahgprogbvevreojrjvgneroabnrebnfdbnf.sbhn rei rihtaeigharieobgfbg;haejr hgu")
-    //     .attr("font-family", "sans-serif")
-    //     .attr("font-size", "20px")
-    //     .attr("fill", "black");
-
     var xScale = d3.scaleLinear().range([0, width - 50]);
     var yScale = d3.scaleLinear().range([height, 50]);
 
@@ -199,7 +192,6 @@ function start() {
                         tooltip.html("Year: " + d.Event_Date + "<br/>Number of Crashes: " + NumYearCount[d.Event_Date] 
                             + "<br/>Number of Fatalities: " + NumFatalitiesCount[d.Event_Date]
                             + "<br/>Total Uninjured: " + NumUninjuredCount[d.Event_Date]);
-
                         return tooltip.style("visibility", "visible").attr("data-html", "true");})
                     .on("mousemove", function(){return tooltip.style("top", (event.pageY)+"px").style("left",(event.pageX)+"px");})
                     .on("mouseout", function(){return tooltip.style("visibility", "hidden");});
@@ -239,7 +231,4 @@ function start() {
                     .style("stroke-width", "1px")
             }
         })
-
-        
-
 }
