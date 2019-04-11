@@ -5,20 +5,29 @@
   stroke: #000;
   shape-rendering: crispEdges;
 }
+
 .x.axis path {
   fill: none;
   stroke: #000;
   shape-rendering: crispEdges;
 }
 
+.container {
+  float: left;
+}
+.container2 {
+  float: right;
+}
+
 div.tooltip {
 	position: absolute;
 	text-align: center;
 	width: 170px;
-	height: 70px;
+	height: 80px;
 	padding: 2px;
 	background: #DDA0DD;
 	border: 0px;
 	border-radius: 8px;
 	pointer-events: none;
+
 }

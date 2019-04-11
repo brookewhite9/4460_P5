@@ -3,10 +3,12 @@ window.onload = start;
 function start() {
 
     var graph = document.getElementById('graph');
+    var storyText = document.getElementById('storyText');
+    var nextButton = document.getElementById('nextButton');
+    var prevButton = document.getElementById('prevButton');
 
     var width = 800;
     var height = 600;
-
     var graphNum = 0;
 
     var svg = d3.select(graph)
@@ -14,6 +16,12 @@ function start() {
         .attr('width', width)
         .attr('height', height);
 
+    // var svg2 = d3.select(graph)
+    //     .append("text")
+    //     .text("RANDOM TEXT.... BLAH BLAH... dsngfjorwahgprogbvevreojrjvgneroabnrebnfdbnf.sbhn rei rihtaeigharieobgfbg;haejr hgu")
+    //     .attr("font-family", "sans-serif")
+    //     .attr("font-size", "20px")
+    //     .attr("fill", "black");
 
     var xScale = d3.scaleLinear().range([0, width - 50]);
     var yScale = d3.scaleLinear().range([height, 50]);
@@ -85,25 +93,10 @@ function start() {
         });
 
         createGraph1();
-         d3.select(graph)
-            .append('p')
-            .append('button')
-                .style("border", "1px solid black")
-            .text('Previous')
-            .on('click', function() {
-                if (graphNum == 1) {
-                    resetDots();
-                } else if (graphNum == 2) {
-                    resetDots();
-                    transitionIncrease();
-                    graphNum = 1;
-                }
-                
-            });
 
-            d3.select(graph)
+        d3.select(nextButton)
             .append('button')
-                .style("border", "1px solid black")
+            .style("border", "1px solid black")
             .text('Next')
             .on('click', function() {
                 if (graphNum == 0) {
@@ -113,8 +106,22 @@ function start() {
                     resetDots();
                     transitionDecrease();
                     graphNum = 2;
-                }
-                
+                }      
+            });
+
+         d3.select(prevButton)
+            .append('button')
+            .style("border", "1px solid black")
+            .text('Previous')
+            .on('click', function() {
+                if (graphNum == 1) {
+                    resetDots();
+                    graphNum = 0;
+                } else if (graphNum == 2) {
+                    resetDots();
+                    transitionIncrease();
+                    graphNum = 1;
+                }               
             });
 
             function resetDots() {
@@ -179,8 +186,7 @@ function start() {
                     .style("z-index", "10")
                     .style("visibility", "hidden");
                    
-          
-                
+
                 svg.selectAll(".dot")
                     .data(data)
                         .enter().append("circle") // Uses the enter().append() method
@@ -190,9 +196,9 @@ function start() {
                     .attr("r", 5)
                     .attr('transform', 'translate(30,0)')
                     .on("mouseover", function(d){
-                        tooltip.text("Year: " + d.Event_Date + "Number of Crashes: " + NumYearCount[d.Event_Date] 
-                            + "Number of Fatalities: " + NumFatalitiesCount[d.Event_Date]
-                            + "Total Uninjured: " + NumUninjuredCount[d.Event_Date]).attr("data-html", "true");
+                        tooltip.html("Year: " + d.Event_Date + "<br/>Number of Crashes: " + NumYearCount[d.Event_Date] 
+                            + "<br/>Number of Fatalities: " + NumFatalitiesCount[d.Event_Date]
+                            + "<br/>Total Uninjured: " + NumUninjuredCount[d.Event_Date]);
 
                         return tooltip.style("visibility", "visible").attr("data-html", "true");})
                     .on("mousemove", function(){return tooltip.style("top", (event.pageY)+"px").style("left",(event.pageX)+"px");})

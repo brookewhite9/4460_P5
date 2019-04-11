@@ -2,7 +2,7 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>Flight Incident Data</title>
+	<title>21 Years of Flight Incidents</title>
 	<!-- Always include D3 first. -->
 	<script src="http://d3js.org/d3.v4.min.js"></script>
 	<!-- Include main.js, which is where all our code lives -->
@@ -11,8 +11,21 @@
 	<link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
-	<h1>Flight Incident Data</h1>
-	<!-- Our graph will be added inside this divider element -->
-	<div id="graph"></div>
+	<h1>The World's History of Flight Incidents</h1>
+	<div class="container" id="graph"></div>
+	<div class="container" id="main" style= "display: contents;">
+		<div id="storyText"> 
+			<br/>
+			<p>
+				<strong>TEXT GOES HERE</strong> <span id="storyText"></span>
+			</p>
+			<br/>
+		</div>
+	</div>
+	<div>
+			<div style="float:left; margin-right: 100px"id="prevButton"> </div>
+			<div id="nextButton"> </div>		
+	</div>
+	
 </body>
 </html>
