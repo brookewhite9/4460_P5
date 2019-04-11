@@ -475,7 +475,7 @@ function start() {
 
 
                 var nodes = d3.hierarchy(newData)
-                        .sum(function(d) { return NumUninjuredCount[d.Event_Date]; });
+                        .sum(function(d) { return NumFatalitiesCount[d.Event_Date]; });
 
                 //console.log(nodes);
 
@@ -488,7 +488,7 @@ function start() {
                         .append("g")
                         .attr("class", "node")
                         .attr("transform", function(d) {
-                            var moveX = d.x - 200;
+                            var moveX = d.x - 150;
                             return "translate(" + moveX + "," + d.y + ")";
                         });
                 
