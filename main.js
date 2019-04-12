@@ -4,13 +4,43 @@ function start() {
 
     var graph = document.getElementById('graph');
     var graph2 = document.getElementById('graph2');
-    var storyText = document.getElementById('storyText');
     var nextButton = document.getElementById('nextButton');
     var prevButton = document.getElementById('prevButton');
 
     var width = 800;
     var height = 500;
     var graphNum = 0;
+
+    var textStuff = ["Ever since the Wright brothers decided to take the world into the skies in the early 1900s, aviation has been a major industry for transportation and entertainment alike." 
+                        + " On any given day around eight million people fly on an airplane and each year companies work to develop new components designed to improve the experience of flying." 
+                        + " Unfortunately, as with every advancement of technology, the miraculous benefits of such creation are sprinkled with instances of devastating failure." 
+                        + " To help better understand the distribution of airplane related accidents over the years, below is a graph of reported incidents that occured from 1995 through 2016." 
+                        + " This line graph aids showing changes in the data over time. As you can see, there are many peaks and valleys in the number of reported incidents over the years." 
+                        + " Click “Next” to explore this data more.",
+                    "First, let’s look at the intervals where the number of reported airplane related incidents increases from the past year." 
+                        + " On the graph, data points that increase from the previous year are highlighted." 
+                        + " There are many spikes in the data with most being gradual increases, however 2004-2005 and 2009-2010 stand out in particular as they feature the most drastic inclines over a year." 
+                        + " The largest increase in data occurs from 2009 to 2010 with a difference of 34 reported incidents and the year with the most amount of accidents overall is 2011." 
+                        + " One would think that the number of accidents should be a steady decline throughout the years as technology improves, but the data shows much fluctuation." 
+                        + " This could be because modern communication and record-keeping is far superior to that in the past which enables more records to be kept for even the least significant incident." 
+                        + " In the past, they may have focused documenting critical accidents that resulted in high fatalities." 
+                        + " We will examine this more later. Another possible explanation is the public’s comfort with flying now and our need for transportation." 
+                        + " The increased need for commercial airlines flying both passengers and goods across the country could result in more accidents.",
+                    "In this graph the declines in reports from year to year are highlighted." 
+                        + " Unlike the increases in reports that typically appeared in over the span of a year and then began to decline again, the decreases over the years appear to cluster into steady declines over multiple years."
+                        + " The most drastic decrease is obviously from 2015 to 2016 with a difference of 56 incidents and, although it features a much smaller difference, there is a sharp decline from 2012 to 2013 also." 
+                        + " The year 2016 has the fewest reports out of all the data. As this year was the last point following a downward trend starting in 2011, the small amount of reported accidents could be caused by an initiative to prevent crashes, more thorough safety requirements, or new technology.",
+                    "In order to better visualize the differences in total fatalities versus total uninjured per year, these bubble clusters display each attribute in an easily comparable way." 
+                        + " To the left, you can see the number of fatalities each year which is shown by the size of the bubble. The years in large bubbles had the most fatalities while those in the smaller ones had few." 
+                        + " The right visual operates in a similar way, however, it depicts total uninjured per year. You can click on the colorful part of each bubble to highlight that year’s data in both visualizations so the reported fatalities versus uninjured for that year can be compared." 
+                        + " Recall that 2011 has the most reports of incidents over all the years. If you select the associated bubble, you can see that there were substantially fewer fatailites than uninjured." 
+                        + " This implies that although there were more accidents that year, most were minor and resulted in a relatively safe return to ground." 
+                        + " It can also be observed from these visualizations that 2016 had the least amount of uninjured of all the years, however this could be attributed to it having the fewest accident reports which we learned from the previous graph.",
+                    "This final graph provides a way to compare the number of accidents that resulted in a destroyed aircraft versus the number that only took minor damage over the years." 
+                        + " The top blue line represents the number of incidents with minor damage while the lower red line shows the number of accidents that led to the complete destruction of the plane." 
+                        + " According to this visualization, 2010 has the most minor damage reports while 1999 has the most incidents that resulted in a destroyed aircraft." 
+                        + " It comes as no surprise that the year 2016 has the least amount of reports of both minor and destroyed accidents. It is interesting, however, that the lines follow a similar pattern if you compare the blue line on this graph to that of the first graph shown." 
+                        + " This relationship could be attributed to the fact that most reports that make up the data are minor damage. The main structure of the first visualization showing overall reports could be primarily showing the instances of minor damage as they would have the most influence with their large number of occurrences."]
 
     var svg = d3.select(graph)
         .append('svg')
@@ -139,6 +169,8 @@ function start() {
         console.log(NumDamageMinorCountArray);
 
         CreateGraph1()
+        d3.select('#storyText')
+          .text(textStuff[0]);
         //CreateGraph2();
         //CreateGraph3();
 
@@ -152,20 +184,28 @@ function start() {
                     d3.select(prevButton).style("visibility", "hidden");
                     resetDots();
                     graphNum = 0;
+                    d3.select('#storyText')
+                      .text(textStuff[0]);
                 } else if (graphNum == 2) {
                     resetDots();
                     transitionIncrease();
                     graphNum = 1;
+                    d3.select('#storyText')
+                      .text(textStuff[1]);
                 } else if (graphNum == 3) {
                     resetSVG();
                     CreateGraph1();
                     transitionDecrease();
                     graphNum = 2;
+                    d3.select('#storyText')
+                      .text(textStuff[2]);
                 } else if (graphNum == 4) {
                     resetSVG();
                     CreateGraph2();
                     CreateGraph3();
                     graphNum = 3;
+                    d3.select('#storyText')
+                      .text(textStuff[3]);
                 }               
             });
 
@@ -180,20 +220,28 @@ function start() {
                 if (graphNum == 0) {  
                     transitionIncrease();
                     graphNum = 1;
+                    d3.select('#storyText')
+                      .text(textStuff[1]);
                 } else if (graphNum == 1) {
                     resetDots();
                     transitionDecrease();
                     graphNum = 2;
+                    d3.select('#storyText')
+                      .text(textStuff[2]);
                 } else if (graphNum == 2) {
                     resetSVG();
                     CreateGraph2();
                     CreateGraph3();
                     graphNum = 3;
+                    d3.select('#storyText')
+                      .text(textStuff[3]);
                 } else if (graphNum == 3) {
                     d3.select(nextButton).style("visibility", "hidden");
                     resetSVG();
                     CreateGraph4();
                     graphNum = 4;
+                    d3.select('#storyText')
+                      .text(textStuff[4]);
                 }      
             });
 
@@ -564,6 +612,8 @@ function start() {
                     }
 
             function CreateGraph4() {
+                d3.select('#storyText')
+                  .text(textStuff[4]);
                 //d3.selectAll(graph).selectAll("*").remove();
                 xScale.domain([1995, 2016]); // scaled by year
                 //yScale.domain([0, d3.max(data, function(d) { return NumDamageMinorCount[d.Event_Date]; })]); // scaled by date

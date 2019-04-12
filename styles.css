@@ -37,17 +37,11 @@
 .container2 {
   float: right;
 }
-.headingContainer {
-	/*width: 300px;
-	padding: 2px;
-	float:left;
-	CHANGE THIS TO GET TO LEFT SIDE */
-}
 
 div.tooltip {
 	position: absolute;
 	text-align: center;
-	width: 170px;
+	width: 180px;
 	height: 80px;
 	padding: 2px;
 	background: #DDA0DD;
