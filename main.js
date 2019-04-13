@@ -7,7 +7,7 @@ function start() {
     var nextButton = document.getElementById('nextButton');
     var prevButton = document.getElementById('prevButton');
 
-    var width = 800;
+    var width = 700;
     var height = 500;
     var graphNum = 0;
 
@@ -168,7 +168,7 @@ function start() {
 
         console.log(NumDamageMinorCountArray);
 
-        CreateGraph1()
+        CreateGraph1();
         d3.select('#storyText')
           .text(textStuff[0]);
         //CreateGraph2();
@@ -264,7 +264,7 @@ function start() {
 
             function resetSVG() {
                 svg.selectAll("*").remove();
-                svg2.selectAll("*").remove();
+                svg2.selectAll("*").remove();   
             }
 
 
@@ -278,7 +278,7 @@ function start() {
                 // line showing amount of crashes per year
                 var valueline = d3.line()
                     .x(function(d) { return xScale(d.Event_Date); })
-                    .y(function(d) { return yScale(d.y); })
+                    .y(function(d) { return yScale(d.y) - 20; })
                     .curve(d3.curveMonotoneX);
 
 
@@ -321,7 +321,7 @@ function start() {
                         .enter().append("circle") // Uses the enter().append() method
                     .attr("class", "dot") // Assign a class for styl ing
                     .attr("cx", function(d) { return xScale(d.Event_Date) })
-                    .attr("cy", function(d) { return yScale(NumYearCount[d.Event_Date]) })
+                    .attr("cy", function(d) { return yScale(NumYearCount[d.Event_Date]) - 20 })
                     .attr("r", 5)
                     .attr('transform', 'translate(30,0)')
                     .on("mouseover", function(d){
@@ -414,7 +414,7 @@ function start() {
                         .append("g")
                         .attr("class", "node")
                         .attr("transform", function(d) {
-                            var moveX = d.x - 200;
+                            var moveX = d.x - 150;
                             return "translate(" + moveX + "," + d.y + ")";
                         });
                 
@@ -439,8 +439,7 @@ function start() {
                             return color(i);
                         })
                         .on("mouseover", function(d){
-                        tooltip.html("Year: " + d.data.Event_Date + "<br/>Total Uninjured: " + d.data.count 
-                            + "<br/> Total Fatalities:" + NumFatalitiesCount[d.data.Event_Date])
+                        tooltip.html("Year: " + d.data.Event_Date + "<br/>Total Uninjured: " + d.data.count)
                             return tooltip.style("visibility", "visible").attr("data-html", "true");})
                         .on("mousemove", function(){return tooltip.style("top", (event.pageY - 30)+"px").style("left",(event.pageX)+"px");})
                         .on("mouseout", function(){return tooltip.style("visibility", "hidden");})
@@ -476,8 +475,7 @@ function start() {
                             return d.data.Event_Date.substring(0, d.r / 3);
                         })
                         .on("mouseover", function(d){
-                        tooltip.html("Year: " + d.data.Event_Date + "<br/>Total Uninjured: " + d.data.count 
-                            + "<br/> Total Fatalities:" + NumFatalitiesCount[d.data.Event_Date]);
+                        tooltip.html("Year: " + d.data.Event_Date + "<br/>Total Uninjured: " + d.data.count);
                             return tooltip.style("visibility", "visible").attr("data-html", "true");})
                         .on("mousemove", function(){return tooltip.style("top", (event.pageY - 30)+"px").style("left",(event.pageX)+"px");})
                         .on("mouseout", function(){return tooltip.style("visibility", "hidden");});                        
@@ -536,7 +534,7 @@ function start() {
                         .append("g")
                         .attr("class", "node")
                         .attr("transform", function(d) {
-                            var moveX = d.x - 150;
+                            var moveX = d.x - 100;
                             return "translate(" + moveX + "," + d.y + ")";
                         });
                 
@@ -561,8 +559,7 @@ function start() {
                             return color(i);
                         })
                         .on("mouseover", function(d){
-                        tooltip.html("Year: " + d.data.Event_Date + "<br/>Total Fatalities: " + d.data.count 
-                            + "<br/> Total Uninjured :" + NumUninjuredCount[d.data.Event_Date]);
+                        tooltip.html("Year: " + d.data.Event_Date + "<br/>Total Fatalities: " + d.data.count);
                             return tooltip.style("visibility", "visible").attr("data-html", "true");})
                         .on("mousemove", function(){return tooltip.style("top", (event.pageY - 30)+"px").style("left",(event.pageX)+"px");})
                         .on("mouseout", function(){return tooltip.style("visibility", "hidden");})
@@ -598,8 +595,7 @@ function start() {
                             return d.data.Event_Date.substring(0, d.r / 3);
                         })
                         .on("mouseover", function(d){
-                        tooltip.html("Year: " + d.data.Event_Date + "<br/>Total Fatalities: " + d.data.count 
-                            + "<br/> Total Uninjured :" + NumUninjuredCount[d.data.Event_Date]);
+                        tooltip.html("Year: " + d.data.Event_Date + "<br/>Total Fatalities: " + d.data.count);
                             return tooltip.style("visibility", "visible").attr("data-html", "true");})
                         .on("mousemove", function(){return tooltip.style("top", (event.pageY - 30)+"px").style("left",(event.pageX + 20)+"px");})
                         .on("mouseout", function(){return tooltip.style("visibility", "hidden");});
@@ -626,17 +622,28 @@ function start() {
                 var datasetDestroyed = d3.range(22).map(function(d, i) { return {"y": NumDamageDestroyedCountArray[i].count, "Event_Date": 
                     + NumDamageDestroyedCountArray[i].Event_Date } })
 
+                var area = d3.area()
+                    .x(function(d) { return xScale(d.Event_Date); })
+                    .y0(height - 20)
+                    .y1(function(d) { return yScale(d.y) - 20; });
+
                 // line showing amount of crashes per year
                 var valueline = d3.line()
                     .x(function(d) { return xScale(d.Event_Date); })
-                    .y(function(d) { return yScale(d.y); })
+                    .y(function(d) { return yScale(d.y) - 20; })
                     .curve(d3.curveMonotoneX);
 
                 var valueline2 = d3.line()
                     .x(function(d) { return xScale(d.Event_Date); })
-                    .y(function(d) { return yScale(d.y); })
+                    .y(function(d) { return yScale(d.y) - 20; })
                     .curve(d3.curveMonotoneX);
 
+                svg.append("path")
+                   .datum(datasetMinor)
+                   .attr("class", "area")
+                   .attr("d", area)
+                   .attr('transform', 'translate(30,0)')
+                   .style("fill", "lightsteelblue");    
 
                 svg.append("path")
                   .datum(datasetMinor)
@@ -646,6 +653,13 @@ function start() {
                   .attr("stroke-width", 5)
                   .attr('transform', 'translate(30,0)')
                   .attr("d", valueline);
+
+                svg.append("path")
+                   .datum(datasetDestroyed)
+                   .attr("class", "area")
+                   .attr('transform', 'translate(30,0)')
+                   .style("fill", "coral")
+                   .attr("d", area);    
 
                 svg.append("path")
                   .datum(datasetDestroyed)
@@ -686,7 +700,7 @@ function start() {
                         .enter().append("circle") // Uses the enter().append() method
                     .attr("class", "dot") // Assign a class for styl ing
                     .attr("cx", function(d) { return xScale(d.Event_Date) })
-                    .attr("cy", function(d) { return yScale(NumDamageDestroyedCount[d.Event_Date]) })
+                    .attr("cy", function(d) { return yScale(NumDamageDestroyedCount[d.Event_Date]) - 20 })
                     .attr("r", 5)
                     .attr('transform', 'translate(30,0)')
                     .on("mouseover", function(d){
@@ -703,7 +717,7 @@ function start() {
                         .enter().append("circle") // Uses the enter().append() method
                     .attr("class", "dot2") // Assign a class for styl ing
                     .attr("cx", function(d) { return xScale(d.Event_Date) })
-                    .attr("cy", function(d) { return yScale(NumDamageMinorCount[d.Event_Date]) })
+                    .attr("cy", function(d) { return yScale(NumDamageMinorCount[d.Event_Date]) - 20 })
                     .attr("r", 5)
                     .attr('transform', 'translate(30,0)')
                     .on("mouseover", function(d){
